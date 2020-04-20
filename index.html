@@ -24,6 +24,7 @@ $.getJSON("csvjson.json", function(result){
     var pe_suspeito = 0
     var pe_recuperado = 0
     var pe_obito = 0
+    var pe_ativos = 0
     var pe_total = 0
 
     for(i=0; i < result.length; i++){
@@ -35,6 +36,7 @@ $.getJSON("csvjson.json", function(result){
       if(result[i].evolucao == "RECUPERADO" && result[i].classe == "CONFIRMADO"){pe_recuperado++}
       if(result[i].evolucao == "ÓBITO" && result[i].classe == "CONFIRMADO"){pe_obito++}
     }
+    pe_ativos = pe_total - pe_obito - pe_recuperado
 
     //Tabela de quantidades Pernambuco
     tabela_qtd = document.getElementById("tabela_covid_pernambuco")
@@ -47,7 +49,8 @@ $.getJSON("csvjson.json", function(result){
     var coluna_suspeito = linha_totais.insertCell(3)
     var coluna_recuperado = linha_totais.insertCell(4)
     var coluna_obito = linha_totais.insertCell(5)
-    var coluna_total = linha_totais.insertCell(6)
+    var coluna_ativos = linha_totais.insertCell(6)
+    var coluna_total = linha_totais.insertCell(7)
 
     coluna_uti.innerHTML = pe_uti
     coluna_internado.innerHTML = pe_internado
@@ -55,6 +58,7 @@ $.getJSON("csvjson.json", function(result){
     coluna_suspeito.innerHTML = pe_suspeito
     coluna_recuperado.innerHTML = pe_recuperado
     coluna_obito.innerHTML = pe_obito
+    coluna_ativos.innerHTML = pe_ativos
     coluna_total.innerHTML = pe_total
 
     //Esconder as tabelas para melhorar a UX
@@ -105,6 +109,7 @@ $.getJSON("csvjson.json", function(result){
       var total_suspeito = 0
       var total_recuperado = 0
       var total_obito = 0
+      var total_ativos = 0
       var total_cidade = 0
 
       for(i=0; i < result.length; i++){
@@ -327,6 +332,7 @@ $.getJSON("csvjson.json", function(result){
           total_obito++
         }
       }
+      total_ativos = total_cidade - total_obito - total_recuperado
 
       //Tabela de quantidades Cidade
       tabela_qtd = document.getElementById("tabela_covid_totais")
@@ -339,7 +345,8 @@ $.getJSON("csvjson.json", function(result){
       var coluna_suspeito = linha_totais.insertCell(3)
       var coluna_recuperado = linha_totais.insertCell(4)
       var coluna_obito = linha_totais.insertCell(5)
-      var coluna_total = linha_totais.insertCell(6)
+      var coluna_ativos = linha_totais.insertCell(6)
+      var coluna_total = linha_totais.insertCell(7)
 
       coluna_uti.innerHTML = total_uti
       coluna_internado.innerHTML = total_internado
@@ -347,6 +354,7 @@ $.getJSON("csvjson.json", function(result){
       coluna_suspeito.innerHTML = total_suspeito
       coluna_recuperado.innerHTML = total_recuperado
       coluna_obito.innerHTML = total_obito
+      coluna_ativos.innerHTML = total_ativos
       coluna_total.innerHTML = total_cidade
     });
     $('#totais').show()
@@ -471,6 +479,7 @@ $.getJSON("cidades_brasil.json", function(cidades, JSON_UNESCAPED_UNICODE){
               <th scope="col">Suspeito</th>
               <th scope="col">Recuperado</th>
               <th scope="col">Óbito</th>
+              <th scope="col">Ativos</th>
               <th scope="col">Total</th>
             </tr>
           </thead>
@@ -501,6 +510,7 @@ $.getJSON("cidades_brasil.json", function(cidades, JSON_UNESCAPED_UNICODE){
               <th scope="col">Suspeito</th>
               <th scope="col">Recuperado</th>
               <th scope="col">Óbito</th>
+              <th scope="col">Ativos</th>
               <th scope="col">Total</th>
             </tr>
           </thead>
