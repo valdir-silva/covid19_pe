@@ -304,7 +304,8 @@ $.getJSON("csvjson.json", function(result){
           var sexo   = result[i].Sexo;
           var primeiros_sint   = result[i].dt_primeiros_sintomas;
           var sintomas = result[i].sintomas;
-          var comorbidades = result[i].comorbidades;
+          var comorbidades = result[i].comorbidades; 
+          var data_obito = result[i].dt_obito;
 
           tabela = document.getElementById("tabela_covid_obito");
 
@@ -320,6 +321,7 @@ $.getJSON("csvjson.json", function(result){
           var coluna5 = linha.insertCell(4);
           var coluna6 = linha.insertCell(5);
           var coluna7 = linha.insertCell(6);
+          var coluna8 = linha.insertCell(7);
 
           coluna1.innerHTML = id;
           coluna2.innerHTML = data;
@@ -328,6 +330,7 @@ $.getJSON("csvjson.json", function(result){
           coluna5.innerHTML = primeiros_sint;
           coluna6.innerHTML = sintomas;
           coluna7.innerHTML = comorbidades;
+          coluna8.innerHTML = data_obito;
 
           total_obito++
         }
@@ -442,16 +445,12 @@ $.getJSON("cidades_brasil.json", function(cidades, JSON_UNESCAPED_UNICODE){
       <table class="table">
         <a class="texto-2">
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          Atualização: 18/04/2020
+          Atualização: 19/04/2020
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </a>
       <div id="myDropdown" class="dropdown-content">
         <input type="text" placeholder="Buscar.." id="myInput" onkeyup="filterFunction()">
-        <a onclick="buscarDadosCidade('RECIFE')">Recife</a>
-        <a onclick="buscarDadosCidade('VITÓRIA DE SANTO ANTÃO')">Vitória de Santo Antão</a>
-        <a onclick="buscarDadosCidade('MACHADOS')">Machados</a>
-        <a onclick="buscarDadosCidade('LIMOEIRO')">Limoeiro</a>
-        <a onclick="buscarDadosCidade('OLINDA')">Olinda</a>
+        <a>ATUALIZE A PÁGINA!!!</a>
         
       </div>
       
@@ -692,6 +691,7 @@ $.getJSON("cidades_brasil.json", function(cidades, JSON_UNESCAPED_UNICODE){
             <th scope="col">Inicio Sint.</th>
             <th scope="col">Sintomas</th>
             <th scope="col">Comorbidades</th>
+            <th scope="col">Data Óbito</th>
           </tr>
         </thead>
         <tbody id="tabela_covid_obito">
@@ -704,6 +704,7 @@ $.getJSON("cidades_brasil.json", function(cidades, JSON_UNESCAPED_UNICODE){
     <a>
       Criado por Valdir Silva, Código aberto em: <a href="https://github.com/valdir-silva/covid19_pe">https://github.com/valdir-silva/covid19_pel</a>
     </a>
+    <br>
     <a>
       Dados do Governo de Pernambuco, disponíveis em: <a href="http://dados.seplag.pe.gov.br/apps/corona.html">http://dados.seplag.pe.gov.br/apps/corona.html</a>
     </a>
