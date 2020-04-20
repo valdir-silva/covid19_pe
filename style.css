@@ -1,0 +1,85 @@
+.caixa {
+    width: 100vw;
+         height: auto;
+         display: flex;
+         flex-direction: row;
+         justify-content: center;
+         align-items: baseline;
+}
+
+.tabela {
+    width: auto;
+    height: auto;
+    margin-right: 5ch;
+    margin-left: 5ch;
+}
+
+.titulo {
+    cursor: pointer;
+}
+
+.titulo_texto {
+    width: 100ch !important;
+    text-align: center;
+    color:white;
+    font-size: 2.5ch;
+}
+
+.texto {
+    font-size: 3ch !important;
+    color: dimgray;
+}
+
+.texto-2 {
+    font-size: 2ch !important;
+    color: whitesmoke !important;
+    text-align: center !important;
+    align-items:center !important;
+    align-content: center !important;
+}
+
+.cidade {
+    background-color: dimgray;
+}
+
+.escolher {
+    font-size: 3ch !important;
+}
+
+.rotape {
+    margin-top: 25ch;
+    font-size: 1.5ch;
+    text-align: center;
+}
+
+#myInput {
+    box-sizing: border-box;
+    background-image: url('searchicon.png');
+    background-position: 14px 12px;
+    background-repeat: no-repeat;
+    font-size: 16px;
+    padding: 14px 20px 12px 45px;
+    border: none;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f6f6f6;
+    min-width: 230px;
+    overflow: auto;
+    border: 1px solid #ddd;
+    z-index: 1;
+  }
+  
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+  
+  .dropdown a:hover {background-color: #ddd;}
+  
+  .show {display: block;}

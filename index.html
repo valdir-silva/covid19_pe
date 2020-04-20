@@ -1,0 +1,704 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-164013543-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-164013543-1');
+</script>
+
+<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<meta charset="UTF-8">
+<script>
+
+$.getJSON("csvjson.json", function(result){
+      
+    var pe_uti = 0
+    var pe_internado = 0
+    var pe_isolamento = 0
+    var pe_suspeito = 0
+    var pe_recuperado = 0
+    var pe_obito = 0
+    var pe_total = 0
+
+    for(i=0; i < result.length; i++){
+      if(result[i].classe == "CONFIRMADO"){pe_total++}
+      if(result[i].evolucao == "INTERNADO UTI" && result[i].classe == "CONFIRMADO"){pe_uti++}
+      if(result[i].evolucao == "INTERNADO LEITO DE ISOLAMENTO" && result[i].classe == "CONFIRMADO"){pe_internado++}
+      if(result[i].evolucao == "ISOLAMENTO DOMICILIAR" && result[i].classe == "CONFIRMADO"){pe_isolamento++}
+      if(result[i].classe == "EM INVESTIGAÇÃO"){pe_suspeito++}
+      if(result[i].evolucao == "RECUPERADO" && result[i].classe == "CONFIRMADO"){pe_recuperado++}
+      if(result[i].evolucao == "ÓBITO" && result[i].classe == "CONFIRMADO"){pe_obito++}
+    }
+
+    //Tabela de quantidades Pernambuco
+    tabela_qtd = document.getElementById("tabela_covid_pernambuco")
+
+    var linha_totais = tabela_qtd.insertRow(-1);
+
+    var coluna_uti = linha_totais.insertCell(0)
+    var coluna_internado = linha_totais.insertCell(1)
+    var coluna_isolamento = linha_totais.insertCell(2)
+    var coluna_suspeito = linha_totais.insertCell(3)
+    var coluna_recuperado = linha_totais.insertCell(4)
+    var coluna_obito = linha_totais.insertCell(5)
+    var coluna_total = linha_totais.insertCell(6)
+
+    coluna_uti.innerHTML = pe_uti
+    coluna_internado.innerHTML = pe_internado
+    coluna_isolamento.innerHTML = pe_isolamento
+    coluna_suspeito.innerHTML = pe_suspeito
+    coluna_recuperado.innerHTML = pe_recuperado
+    coluna_obito.innerHTML = pe_obito
+    coluna_total.innerHTML = pe_total
+
+    //Esconder as tabelas para melhorar a UX
+    $('#totais').hide()
+    $('#uti').hide()
+    $('#internado').hide()
+    $('#domiciliar').hide()
+    $('#suspeito').hide()
+    $('#recuperado').hide()
+    $('#obito').hide()
+
+  });
+
+  function removeTextNodes(el) {
+    var nodes = el.childNodes, i = nodes.length;
+    while (i--)
+      if (nodes[i].nodeType == 3) el.removeChild(nodes[i]);
+  }
+
+  function removeLinhas(table) {
+    while (table.rows.length > 0)
+     { table.deleteRow(0); }
+  }
+
+  function buscarDadosCidade (cidade){
+
+    removeLinhas(document.getElementById("tabela_covid_totais"))
+    removeLinhas(document.getElementById("tabela_covid_internado_uti"))
+    removeLinhas(document.getElementById("tabela_covid_internado"))
+    removeLinhas(document.getElementById("tabela_covid_isolamento"))
+    removeLinhas(document.getElementById("tabela_covid_suspeito"))
+    removeLinhas(document.getElementById("tabela_covid_recuperado"))
+    removeLinhas(document.getElementById("tabela_covid_obito"))
+
+    document.getElementById("myDropdown").classList.toggle("show");
+    
+    var t = document.createTextNode(cidade);
+    
+    removeTextNodes(document.getElementById("nome_cidade"))
+    removeTextNodes(document.getElementById("tabela_covid_totais"))
+    
+    document.getElementById("nome_cidade").appendChild(t)
+    $.getJSON("csvjson.json", function(result){
+
+      var total_uti = 0
+      var total_internado = 0
+      var total_isolamento = 0
+      var total_suspeito = 0
+      var total_recuperado = 0
+      var total_obito = 0
+      var total_cidade = 0
+
+      for(i=0; i < result.length; i++){
+
+        if(result[i].mun_notificacao == cidade && result[i].classe == "CONFIRMADO"){total_cidade++}
+
+        if(result[i].mun_notificacao == cidade && result[i].evolucao == "INTERNADO UTI" && result[i].classe == "CONFIRMADO")
+        {
+          var id   = result[i].id;
+          var data = result[i].dt_notificacao;
+          var idade   = result[i].Idade;
+          var sexo   = result[i].Sexo;
+          var primeiros_sint   = result[i].dt_primeiros_sintomas;
+          var sintomas = result[i].sintomas;
+          var comorbidades = result[i].comorbidades;
+
+          tabela = document.getElementById("tabela_covid_internado_uti");
+
+          //Inclui uma linha no elemento tabela <tr></tr>
+          //informei -1 para criar a linha no final da tabela
+          var linha   = tabela.insertRow(-1);
+
+          //Adiciona colunas na linha criada <td></td> <td></td>
+          var coluna1 = linha.insertCell(0);
+          var coluna2 = linha.insertCell(1);
+          var coluna3 = linha.insertCell(2);
+          var coluna4 = linha.insertCell(3);
+          var coluna5 = linha.insertCell(4);
+          var coluna6 = linha.insertCell(5);
+          var coluna7 = linha.insertCell(6);
+
+          coluna1.innerHTML = id;
+          coluna2.innerHTML = data;
+          coluna3.innerHTML = idade;
+          coluna4.innerHTML = sexo;
+          coluna5.innerHTML = primeiros_sint;
+          coluna6.innerHTML = sintomas;
+          coluna7.innerHTML = comorbidades;
+
+          total_uti++
+        }
+
+        if(result[i].mun_notificacao == cidade && result[i].evolucao == "INTERNADO LEITO DE ISOLAMENTO" && result[i].classe == "CONFIRMADO")
+        {
+          var id   = result[i].id;
+          var data = result[i].dt_notificacao;
+          var idade   = result[i].Idade;
+          var sexo   = result[i].Sexo;
+          var primeiros_sint   = result[i].dt_primeiros_sintomas;
+          var sintomas = result[i].sintomas;
+          var comorbidades = result[i].comorbidades;
+
+          tabela = document.getElementById("tabela_covid_internado");
+
+          //Inclui uma linha no elemento tabela <tr></tr>
+          //informei -1 para criar a linha no final da tabela
+          var linha   = tabela.insertRow(-1);
+
+          //Adiciona colunas na linha criada <td></td> <td></td>
+          var coluna1 = linha.insertCell(0);
+          var coluna2 = linha.insertCell(1);
+          var coluna3 = linha.insertCell(2);
+          var coluna4 = linha.insertCell(3);
+          var coluna5 = linha.insertCell(4);
+          var coluna6 = linha.insertCell(5);
+          var coluna7 = linha.insertCell(6);
+
+          coluna1.innerHTML = id;
+          coluna2.innerHTML = data;
+          coluna3.innerHTML = idade;
+          coluna4.innerHTML = sexo;
+          coluna5.innerHTML = primeiros_sint;
+          coluna6.innerHTML = sintomas;
+          coluna7.innerHTML = comorbidades;
+
+          total_internado++
+        }
+
+        if(result[i].mun_notificacao == cidade && result[i].evolucao == "ISOLAMENTO DOMICILIAR" && result[i].classe == "CONFIRMADO") 
+        {
+          var id   = result[i].id;
+          var data = result[i].dt_notificacao;
+          var idade   = result[i].Idade;
+          var sexo   = result[i].Sexo;
+          var primeiros_sint   = result[i].dt_primeiros_sintomas;
+          var sintomas = result[i].sintomas;
+          var comorbidades = result[i].comorbidades;
+
+          tabela = document.getElementById("tabela_covid_isolamento");
+
+          //Inclui uma linha no elemento tabela <tr></tr>
+          //informei -1 para criar a linha no final da tabela
+          var linha   = tabela.insertRow(-1);
+
+          //Adiciona colunas na linha criada <td></td> <td></td>
+          var coluna1 = linha.insertCell(0);
+          var coluna2 = linha.insertCell(1);
+          var coluna3 = linha.insertCell(2);
+          var coluna4 = linha.insertCell(3);
+          var coluna5 = linha.insertCell(4);
+          var coluna6 = linha.insertCell(5);
+          var coluna7 = linha.insertCell(6);
+
+          coluna1.innerHTML = id;
+          coluna2.innerHTML = data;
+          coluna3.innerHTML = idade;
+          coluna4.innerHTML = sexo;
+          coluna5.innerHTML = primeiros_sint;
+          coluna6.innerHTML = sintomas;
+          coluna7.innerHTML = comorbidades;
+
+          total_isolamento++
+        }
+
+        if(result[i].mun_notificacao == cidade && result[i].classe == "EM INVESTIGAÇÃO") 
+        {
+          var id   = result[i].id;
+          var data = result[i].dt_notificacao;
+          var idade   = result[i].Idade;
+          var sexo   = result[i].Sexo;
+          var primeiros_sint   = result[i].dt_primeiros_sintomas;
+          var sintomas = result[i].sintomas;
+          var comorbidades = result[i].comorbidades;
+
+          tabela = document.getElementById("tabela_covid_suspeito");
+
+          //Inclui uma linha no elemento tabela <tr></tr>
+          //informei -1 para criar a linha no final da tabela
+          var linha   = tabela.insertRow(-1);
+
+          //Adiciona colunas na linha criada <td></td> <td></td>
+          var coluna1 = linha.insertCell(0);
+          var coluna2 = linha.insertCell(1);
+          var coluna3 = linha.insertCell(2);
+          var coluna4 = linha.insertCell(3);
+          var coluna5 = linha.insertCell(4);
+          var coluna6 = linha.insertCell(5);
+          var coluna7 = linha.insertCell(6);
+
+          coluna1.innerHTML = id;
+          coluna2.innerHTML = data;
+          coluna3.innerHTML = idade;
+          coluna4.innerHTML = sexo;
+          coluna5.innerHTML = primeiros_sint;
+          coluna6.innerHTML = sintomas;
+          coluna7.innerHTML = comorbidades;
+
+          total_suspeito++
+        }
+
+        if(result[i].mun_notificacao == cidade && result[i].evolucao == "RECUPERADO" && result[i].classe == "CONFIRMADO") 
+        {
+          var id   = result[i].id;
+          var data = result[i].dt_notificacao;
+          var idade   = result[i].Idade;
+          var sexo   = result[i].Sexo;
+          var primeiros_sint   = result[i].dt_primeiros_sintomas;
+          var sintomas = result[i].sintomas;
+          var comorbidades = result[i].comorbidades;
+
+          tabela = document.getElementById("tabela_covid_recuperado");
+
+          //Inclui uma linha no elemento tabela <tr></tr>
+          //informei -1 para criar a linha no final da tabela
+          var linha   = tabela.insertRow(-1);
+
+          //Adiciona colunas na linha criada <td></td> <td></td>
+          var coluna1 = linha.insertCell(0);
+          var coluna2 = linha.insertCell(1);
+          var coluna3 = linha.insertCell(2);
+          var coluna4 = linha.insertCell(3);
+          var coluna5 = linha.insertCell(4);
+          var coluna6 = linha.insertCell(5);
+          var coluna7 = linha.insertCell(6);
+
+          coluna1.innerHTML = id;
+          coluna2.innerHTML = data;
+          coluna3.innerHTML = idade;
+          coluna4.innerHTML = sexo;
+          coluna5.innerHTML = primeiros_sint;
+          coluna6.innerHTML = sintomas;
+          coluna7.innerHTML = comorbidades;
+
+          total_recuperado++
+        }
+
+        if(result[i].mun_notificacao == cidade && result[i].evolucao == "ÓBITO" && result[i].classe == "CONFIRMADO") 
+        {
+          var id   = result[i].id;
+          var data = result[i].dt_notificacao;
+          var idade   = result[i].Idade;
+          var sexo   = result[i].Sexo;
+          var primeiros_sint   = result[i].dt_primeiros_sintomas;
+          var sintomas = result[i].sintomas;
+          var comorbidades = result[i].comorbidades;
+
+          tabela = document.getElementById("tabela_covid_obito");
+
+          //Inclui uma linha no elemento tabela <tr></tr>
+          //informei -1 para criar a linha no final da tabela
+          var linha   = tabela.insertRow(-1);
+
+          //Adiciona colunas na linha criada <td></td> <td></td>
+          var coluna1 = linha.insertCell(0);
+          var coluna2 = linha.insertCell(1);
+          var coluna3 = linha.insertCell(2);
+          var coluna4 = linha.insertCell(3);
+          var coluna5 = linha.insertCell(4);
+          var coluna6 = linha.insertCell(5);
+          var coluna7 = linha.insertCell(6);
+
+          coluna1.innerHTML = id;
+          coluna2.innerHTML = data;
+          coluna3.innerHTML = idade;
+          coluna4.innerHTML = sexo;
+          coluna5.innerHTML = primeiros_sint;
+          coluna6.innerHTML = sintomas;
+          coluna7.innerHTML = comorbidades;
+
+          total_obito++
+        }
+      }
+
+      //Tabela de quantidades Cidade
+      tabela_qtd = document.getElementById("tabela_covid_totais")
+
+      var linha_totais = tabela_qtd.insertRow(-1);
+
+      var coluna_uti = linha_totais.insertCell(0)
+      var coluna_internado = linha_totais.insertCell(1)
+      var coluna_isolamento = linha_totais.insertCell(2)
+      var coluna_suspeito = linha_totais.insertCell(3)
+      var coluna_recuperado = linha_totais.insertCell(4)
+      var coluna_obito = linha_totais.insertCell(5)
+      var coluna_total = linha_totais.insertCell(6)
+
+      coluna_uti.innerHTML = total_uti
+      coluna_internado.innerHTML = total_internado
+      coluna_isolamento.innerHTML = total_isolamento
+      coluna_suspeito.innerHTML = total_suspeito
+      coluna_recuperado.innerHTML = total_recuperado
+      coluna_obito.innerHTML = total_obito
+      coluna_total.innerHTML = total_cidade
+    });
+    $('#totais').show()
+  }
+
+</script>
+<script>
+  function escondeResultados(id){
+    var visivel  = $('#' + id).is(':visible')
+    if(visivel){
+      $('#' + id).hide()
+    } else {
+      $('#' + id).show()
+    }
+  }
+
+  function myFunction() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
+
+function filterFunction() {
+  var input, filter, ul, li, a, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  div = document.getElementById("myDropdown");
+  a = div.getElementsByTagName("a");
+  for (i = 0; i < a.length; i++) {
+    txtValue = a[i].textContent || a[i].innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      a[i].style.display = "";
+    } else {
+      a[i].style.display = "none";
+    }
+  }
+}
+
+
+$.getJSON("cidades_brasil.json", function(cidades, JSON_UNESCAPED_UNICODE){
+  var tag = "<input type=\"text\" placeholder=\"Buscar..\" id=\"myInput\" onkeyup=\"filterFunction()\">"
+  for(i = 0; i < cidades.estados.length; i++){
+    if(cidades.estados[i].sigla == "PE"){
+
+      for(j=0;j<cidades.estados[i].cidades.length; j++){
+        var cidade
+
+        cidade = cidades.estados[i].cidades[j]
+
+        tag = tag + " " + "<a onclick=\"buscarDadosCidade('" + cidade.toUpperCase() + "')\">" + cidade + "</a>"
+      }
+    }
+  }
+  var drop = document.getElementById('myDropdown');
+  drop.innerHTML= tag
+});
+
+</script>
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- jQuery (obrigatório para plugins JavaScript do Bootstrap) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Inclui todos os plugins compilados (abaixo), ou inclua arquivos separadados se necessário -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    
+<link href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.3/chosen.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.3/chosen.jquery.min.js"></script>
+
+
+    <div class="container text-center">
+      <h1 class="display-4 m-5">Covid-19 em Cidades de Pernambuco</h1>
+      <p class="texto">
+        Dados do Governo do Estado, atualizados diariamente<br>
+        Para informações ainda mais precisas, solicite a abertura dos dados da prefeitura da sua cidade
+      </p>
+      <p class="">
+        Se não carregar as informações, <b>favor atualizar a página.</b>
+      </p>
+    </div>
+
+    <div class="dropdown tabela titulo cidade">
+      
+      <button onclick="myFunction()" class="btn btn-secondary dropdown-toggle escolher">Escolher Cidade</button>
+      <table class="table">
+        <a class="texto-2">
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          Atualização: 18/04/2020
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </a>
+      <div id="myDropdown" class="dropdown-content">
+        <input type="text" placeholder="Buscar.." id="myInput" onkeyup="filterFunction()">
+        <a onclick="buscarDadosCidade('RECIFE')">Recife</a>
+        <a onclick="buscarDadosCidade('VITÓRIA DE SANTO ANTÃO')">Vitória de Santo Antão</a>
+        <a onclick="buscarDadosCidade('MACHADOS')">Machados</a>
+        <a onclick="buscarDadosCidade('LIMOEIRO')">Limoeiro</a>
+        <a onclick="buscarDadosCidade('OLINDA')">Olinda</a>
+        
+      </div>
+      
+    </table>
+    </div>
+
+    <div class="tabela titulo" onclick="escondeResultados('pernambuco')">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col" class="titulo_texto cidade">Pernambuco</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+
+    <div id="pernambuco" class="caixa">
+      <div class="tabela table-responsive"> 
+        <table class="table table-striped table-dark">
+          <thead>
+            <tr>
+              <th scope="col">Internado em UTI</th>
+              <th scope="col">Leito de Isolamento</th>
+              <th scope="col">Isolamento Domiciliar</th>
+              <th scope="col">Suspeito</th>
+              <th scope="col">Recuperado</th>
+              <th scope="col">Óbito</th>
+              <th scope="col">Total</th>
+            </tr>
+          </thead>
+          <tbody id="tabela_covid_pernambuco">
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="tabela titulo" onclick="escondeResultados('totais')">
+      <table class="table">
+        <thead>
+          <tr>
+            <th id="nome_cidade" scope="col" class="titulo_texto cidade">Escolha a Cidade no Menu Acima</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+
+    <div id="totais" class="caixa">
+      <div class="tabela table-responsive"> 
+        <table id="teste_totais" class="table table-striped table-dark">
+          <thead>
+            <tr>
+              <th scope="col">Internado em UTI</th>
+              <th scope="col">Leito de Isolamento</th>
+              <th scope="col">Isolamento Domiciliar</th>
+              <th scope="col">Suspeito</th>
+              <th scope="col">Recuperado</th>
+              <th scope="col">Óbito</th>
+              <th scope="col">Total</th>
+            </tr>
+          </thead>
+          <tbody id="tabela_covid_totais">
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="tabela titulo" onclick="escondeResultados('uti')">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col" class="titulo_texto bg-danger">Internado em UTI</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+
+    <div id="uti" class="caixa">
+      <div class="tabela table-responsive"> 
+        <table class="table table-striped table-dark">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Notificação</th>
+              <th scope="col">Idade</th>
+              <th scope="col">Sexo</th>
+              <th scope="col">Inicio Sint.</th>
+              <th scope="col">Sintomas</th>
+              <th scope="col">Comorbidades</th>
+            </tr>
+          </thead>
+          <tbody id="tabela_covid_internado_uti">
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="tabela titulo" onclick="escondeResultados('internado')">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col" class="titulo_texto bg-danger">Internado em Leito de Isomanento</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+
+    <div id="internado" class="caixa">
+      <div class="tabela table-responsive"> 
+        <table class="table table-striped table-dark">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Notificação</th>
+              <th scope="col">Idade</th>
+              <th scope="col">Sexo</th>
+              <th scope="col">Inicio Sint.</th>
+              <th scope="col">Sintomas</th>
+              <th scope="col">Comorbidades</th>
+            </tr>
+          </thead>
+          <tbody id="tabela_covid_internado">
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="tabela titulo" onclick="escondeResultados('domiciliar')">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col" class="titulo_texto bg-warning">Isolamento Domiciliar</th>
+              </tr>
+            </thead>
+          </table>
+    </div>
+  
+    <div id="domiciliar" class="caixa">
+      <div class="tabela table-responsive"> 
+        <table class="table table-striped table-dark">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Notificação</th>
+              <th scope="col">Idade</th>
+              <th scope="col">Sexo</th>
+              <th scope="col">Inicio Sint.</th>
+              <th scope="col">Sintomas</th>
+              <th scope="col">Comorbidades</th>
+            </tr>
+          </thead>
+          <tbody id="tabela_covid_isolamento">
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  <div class="tabela titulo" onclick="escondeResultados('suspeito')">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col" class="titulo_texto bg-info">Suspeito</th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+
+  <div id="suspeito" class="caixa">
+    <div class="tabela table-responsive"> 
+      <table class="table table-striped table-dark">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Notificação</th>
+            <th scope="col">Idade</th>
+            <th scope="col">Sexo</th>
+            <th scope="col">Inicio Sint.</th>
+            <th scope="col">Sintomas</th>
+            <th scope="col">Comorbidades</th>
+          </tr>
+        </thead>
+        <tbody id="tabela_covid_suspeito">
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="tabela titulo" onclick="escondeResultados('recuperado')">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col" class="titulo_texto bg-success">Recuperado</th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+
+  <div id="recuperado" class="caixa">
+    <div class="tabela table-responsive"> 
+      <table class="table table-striped table-dark">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Notificação</th>
+            <th scope="col">Idade</th>
+            <th scope="col">Sexo</th>
+            <th scope="col">Inicio Sint.</th>
+            <th scope="col">Sintomas</th>
+            <th scope="col">Comorbidades</th>
+          </tr>
+        </thead>
+        <tbody id="tabela_covid_recuperado">
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="tabela titulo" onclick="escondeResultados('obito')">
+    <table class="table table-dark">
+      <thead>
+        <tr>
+          <th scope="col" class="titulo_texto">Óbito</th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+
+  <div id="obito" class="caixa">
+    <div class="tabela table-responsive"> 
+      <table class="table table-striped table-dark">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Notificação</th>
+            <th scope="col">Idade</th>
+            <th scope="col">Sexo</th>
+            <th scope="col">Inicio Sint.</th>
+            <th scope="col">Sintomas</th>
+            <th scope="col">Comorbidades</th>
+          </tr>
+        </thead>
+        <tbody id="tabela_covid_obito">
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="rotape">
+    <a>
+      Dados do Governo de Pernambuco, disponíveis em: <a href="http://dados.seplag.pe.gov.br/apps/corona.html">http://dados.seplag.pe.gov.br/apps/corona.html</a>
+    </a>
+    <br>
+    <a class="footer" href="http://opendefinition.org/licenses/odc-odbl/">
+      Licença Aberta para Bases de Dados (ODbL) do Open Data Commons
+    </a>
+  </div>
+
+</body>
+</html>
