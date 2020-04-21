@@ -118,7 +118,7 @@ $.getJSON("csvjson.json", function(result){
 
         if(result[i].mun_notificacao == cidade && result[i].evolucao == "INTERNADO UTI" && result[i].classe == "CONFIRMADO")
         {
-          var id   = result[i].id;
+          var id   = result[i].x;
           var data = result[i].dt_notificacao;
           var idade   = result[i].Idade;
           var sexo   = result[i].Sexo;
@@ -141,7 +141,7 @@ $.getJSON("csvjson.json", function(result){
           var coluna6 = linha.insertCell(5);
           var coluna7 = linha.insertCell(6);
 
-          coluna1.innerHTML = id;
+          coluna1.innerHTML = x;
           coluna2.innerHTML = data;
           coluna3.innerHTML = idade;
           coluna4.innerHTML = sexo;
@@ -154,7 +154,7 @@ $.getJSON("csvjson.json", function(result){
 
         if(result[i].mun_notificacao == cidade && result[i].evolucao == "INTERNADO LEITO DE ISOLAMENTO" && result[i].classe == "CONFIRMADO")
         {
-          var id   = result[i].id;
+          var id   = result[i].x;
           var data = result[i].dt_notificacao;
           var idade   = result[i].Idade;
           var sexo   = result[i].Sexo;
@@ -177,7 +177,7 @@ $.getJSON("csvjson.json", function(result){
           var coluna6 = linha.insertCell(5);
           var coluna7 = linha.insertCell(6);
 
-          coluna1.innerHTML = id;
+          coluna1.innerHTML = x;
           coluna2.innerHTML = data;
           coluna3.innerHTML = idade;
           coluna4.innerHTML = sexo;
@@ -190,7 +190,7 @@ $.getJSON("csvjson.json", function(result){
 
         if(result[i].mun_notificacao == cidade && result[i].evolucao == "ISOLAMENTO DOMICILIAR" && result[i].classe == "CONFIRMADO") 
         {
-          var id   = result[i].id;
+          var id   = result[i].x;
           var data = result[i].dt_notificacao;
           var idade   = result[i].Idade;
           var sexo   = result[i].Sexo;
@@ -213,7 +213,7 @@ $.getJSON("csvjson.json", function(result){
           var coluna6 = linha.insertCell(5);
           var coluna7 = linha.insertCell(6);
 
-          coluna1.innerHTML = id;
+          coluna1.innerHTML = x;
           coluna2.innerHTML = data;
           coluna3.innerHTML = idade;
           coluna4.innerHTML = sexo;
@@ -226,7 +226,7 @@ $.getJSON("csvjson.json", function(result){
 
         if(result[i].mun_notificacao == cidade && result[i].classe == "EM INVESTIGAÇÃO") 
         {
-          var id   = result[i].id;
+          var id   = result[i].x;
           var data = result[i].dt_notificacao;
           var idade   = result[i].Idade;
           var sexo   = result[i].Sexo;
@@ -249,7 +249,7 @@ $.getJSON("csvjson.json", function(result){
           var coluna6 = linha.insertCell(5);
           var coluna7 = linha.insertCell(6);
 
-          coluna1.innerHTML = id;
+          coluna1.innerHTML = x;
           coluna2.innerHTML = data;
           coluna3.innerHTML = idade;
           coluna4.innerHTML = sexo;
@@ -262,7 +262,7 @@ $.getJSON("csvjson.json", function(result){
 
         if(result[i].mun_notificacao == cidade && result[i].evolucao == "RECUPERADO" && result[i].classe == "CONFIRMADO") 
         {
-          var id   = result[i].id;
+          var id   = result[i].x;
           var data = result[i].dt_notificacao;
           var idade   = result[i].Idade;
           var sexo   = result[i].Sexo;
@@ -285,7 +285,7 @@ $.getJSON("csvjson.json", function(result){
           var coluna6 = linha.insertCell(5);
           var coluna7 = linha.insertCell(6);
 
-          coluna1.innerHTML = id;
+          coluna1.innerHTML = x;
           coluna2.innerHTML = data;
           coluna3.innerHTML = idade;
           coluna4.innerHTML = sexo;
@@ -298,7 +298,7 @@ $.getJSON("csvjson.json", function(result){
 
         if(result[i].mun_notificacao == cidade && result[i].evolucao == "ÓBITO" && result[i].classe == "CONFIRMADO") 
         {
-          var id   = result[i].id;
+          var id   = result[i].x;
           var data = result[i].dt_notificacao;
           var idade   = result[i].Idade;
           var sexo   = result[i].Sexo;
@@ -445,7 +445,7 @@ $.getJSON("cidades_brasil.json", function(cidades, JSON_UNESCAPED_UNICODE){
       <table class="table">
         <a class="texto-2">
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          Atualização: 19/04/2020
+          Atualização: 20/04/2020
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </a>
       <div id="myDropdown" class="dropdown-content">
