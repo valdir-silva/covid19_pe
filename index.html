@@ -16,6 +16,10 @@
 <meta charset="UTF-8">
 <script>
 
+function atualizar() {
+  window.location.reload()
+}
+
 $.getJSON("csvjson.json", function(result){
       
     var pe_uti = 0
@@ -40,6 +44,10 @@ $.getJSON("csvjson.json", function(result){
 
     //Tabela de quantidades Pernambuco
     tabela_qtd = document.getElementById("tabela_covid_pernambuco")
+
+    if(tabela_qtd == null){
+      atualizar()
+    }
 
     var linha_totais = tabela_qtd.insertRow(-1);
 
@@ -285,7 +293,7 @@ $.getJSON("csvjson.json", function(result){
           var coluna6 = linha.insertCell(5);
           var coluna7 = linha.insertCell(6);
 
-          coluna1.innerHTML = idid;
+          coluna1.innerHTML = id;
           coluna2.innerHTML = data;
           coluna3.innerHTML = idade;
           coluna4.innerHTML = sexo;
@@ -450,8 +458,7 @@ $.getJSON("cidades_brasil.json", function(cidades, JSON_UNESCAPED_UNICODE){
         </a>
       <div id="myDropdown" class="dropdown-content">
         <input type="text" placeholder="Buscar.." id="myInput" onkeyup="filterFunction()">
-        <a>ATUALIZE A PÁGINA!!!</a>
-        
+        <a onclick="atualizar()">ATUALIZE A PÁGINA!!!</a>
       </div>
       
     </table>
