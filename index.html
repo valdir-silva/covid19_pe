@@ -21,18 +21,12 @@ function atualizar() {
 }
 var result
 
-
-
 url = "http://dados.seplag.pe.gov.br/apps/corona.html#dados-pe"
 const proxyurl = "https://cors-anywhere.herokuapp.com/";
 var xhr = new XMLHttpRequest();
 xhr.open("GET", proxyurl + url, true);
 xhr.onreadystatechange = function() {
 if (xhr.readyState == 4){
-
-    //var DomParser = require('dom-parser');
-    //var parser = new DomParser();
-    //var doc = parser.parseFromString(xhr.responseText, "text/html");
 
     var doc = document.createElement('html');
     doc.innerHTML = xhr.responseText;
@@ -43,13 +37,8 @@ if (xhr.readyState == 4){
     for(var i = 0; i < inputs.length; i++) {
         var pagina = inputs[i].innerHTML;
         if(pagina.substring(0,102).toLowerCase() == gambiarra.toLowerCase()){
-            console.log(i + "teste: " + inputs[i].length)
             var exemple = inputs[i].innerHTML;
-
-                    console.log(j)
                     result = JSON.parse(exemple);
-                    console.log(result.x.data[0][0]);//TESTE
-                
         }
     }
         //CODIGO AQUI
@@ -143,7 +132,29 @@ xhr.send();
     removeTextNodes(document.getElementById("tabela_covid_totais"))
     
     document.getElementById("nome_cidade").appendChild(t)
-    $.getJSON("csvjson.json", function(result){
+
+    var result
+    url = "http://dados.seplag.pe.gov.br/apps/corona.html#dados-pe"
+    const proxyurl = "https://cors-anywhere.herokuapp.com/";
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", proxyurl + url, true);
+    xhr.onreadystatechange = function() {
+    if (xhr.readyState == 4){
+
+      var doc = document.createElement('html');
+      doc.innerHTML = xhr.responseText;
+
+      var inputs = doc.getElementsByTagName('script');
+
+      gambiarra = "{\"x\":{\"filter\":\"none\",\"extensions\":[\"Buttons\",\"KeyTable\",\"Responsive\"],\"fillContainer\":true,\"data\":[[1"
+      for(var i = 0; i < inputs.length; i++) {
+          var pagina = inputs[i].innerHTML;
+          if(pagina.substring(0,102).toLowerCase() == gambiarra.toLowerCase()){
+              var exemple = inputs[i].innerHTML;
+                      result = JSON.parse(exemple);
+                  
+          }
+      }
 
       var total_uti = 0
       var total_internado = 0
@@ -154,19 +165,19 @@ xhr.send();
       var total_ativos = 0
       var total_cidade = 0
 
-      for(i=0; i < result.length; i++){
+      for(i=0; i < result.x.data[0].length; i++){
 
-        if(result[i].mun_notificacao == cidade && result[i].classe == "CONFIRMADO"){total_cidade++}
+        if(result.x.data[5][i] == cidade && result.x.data[10][i] == "CONFIRMADO"){total_cidade++}
 
-        if(result[i].mun_notificacao == cidade && result[i].evolucao == "INTERNADO UTI" && result[i].classe == "CONFIRMADO")
+        if(result.x.data[5][i] == cidade && result.x.data[12][i] == "INTERNADO UTI" && result.x.data[10][i] == "CONFIRMADO")
         {
-          var id   = result[i].X;
-          var data = result[i].dt_notificacao;
-          var idade   = result[i].Idade;
-          var sexo   = result[i].Sexo;
-          var primeiros_sint   = result[i].dt_primeiros_sintomas;
-          var sintomas = result[i].sintomas;
-          var comorbidades = result[i].comorbidades;
+          var id   = result.x.data[0][i];
+          var data = result.x.data[2][i];
+          var idade   = result.x.data[3][i];
+          var sexo   = result.x.data[4][i];
+          var primeiros_sint   = result.x.data[6][i];
+          var sintomas = result.x.data[7][i];
+          var comorbidades = result.x.data[8][i];
 
           tabela = document.getElementById("tabela_covid_internado_uti");
 
@@ -194,15 +205,15 @@ xhr.send();
           total_uti++
         }
 
-        if(result[i].mun_notificacao == cidade && result[i].evolucao == "INTERNADO LEITO DE ISOLAMENTO" && result[i].classe == "CONFIRMADO")
+        if(result.x.data[5][i] == cidade && result.x.data[12][i] == "INTERNADO LEITO DE ISOLAMENTO" && result.x.data[10][i] == "CONFIRMADO")
         {
-          var id   = result[i].X;
-          var data = result[i].dt_notificacao;
-          var idade   = result[i].Idade;
-          var sexo   = result[i].Sexo;
-          var primeiros_sint   = result[i].dt_primeiros_sintomas;
-          var sintomas = result[i].sintomas;
-          var comorbidades = result[i].comorbidades;
+          var id   = result.x.data[0][i];
+          var data = result.x.data[2][i];
+          var idade   = result.x.data[3][i];
+          var sexo   = result.x.data[4][i];
+          var primeiros_sint   = result.x.data[6][i];
+          var sintomas = result.x.data[7][i];
+          var comorbidades = result.x.data[8][i];
 
           tabela = document.getElementById("tabela_covid_internado");
 
@@ -230,15 +241,15 @@ xhr.send();
           total_internado++
         }
 
-        if(result[i].mun_notificacao == cidade && result[i].evolucao == "ISOLAMENTO DOMICILIAR" && result[i].classe == "CONFIRMADO") 
+        if(result.x.data[5][i] == cidade && result.x.data[12][i] == "ISOLAMENTO DOMICILIAR" && result.x.data[10][i] == "CONFIRMADO") 
         {
-          var id   = result[i].X;
-          var data = result[i].dt_notificacao;
-          var idade   = result[i].Idade;
-          var sexo   = result[i].Sexo;
-          var primeiros_sint   = result[i].dt_primeiros_sintomas;
-          var sintomas = result[i].sintomas;
-          var comorbidades = result[i].comorbidades;
+          var id   = result.x.data[0][i];
+          var data = result.x.data[2][i];
+          var idade   = result.x.data[3][i];
+          var sexo   = result.x.data[4][i];
+          var primeiros_sint   = result.x.data[6][i];
+          var sintomas = result.x.data[7][i];
+          var comorbidades = result.x.data[8][i];
 
           tabela = document.getElementById("tabela_covid_isolamento");
 
@@ -266,15 +277,15 @@ xhr.send();
           total_isolamento++
         }
 
-        if(result[i].mun_notificacao == cidade && result[i].classe == "EM INVESTIGAÇÃO") 
+        if(result.x.data[5][i] == cidade && result.x.data[10][i] == "EM INVESTIGAÇÃO") 
         {
-          var id   = result[i].X;
-          var data = result[i].dt_notificacao;
-          var idade   = result[i].Idade;
-          var sexo   = result[i].Sexo;
-          var primeiros_sint   = result[i].dt_primeiros_sintomas;
-          var sintomas = result[i].sintomas;
-          var comorbidades = result[i].comorbidades;
+          var id   = result.x.data[0][i];
+          var data = result.x.data[2][i];
+          var idade   = result.x.data[3][i];
+          var sexo   = result.x.data[4][i];
+          var primeiros_sint   = result.x.data[6][i];
+          var sintomas = result.x.data[7][i];
+          var comorbidades = result.x.data[8][i];
 
           tabela = document.getElementById("tabela_covid_suspeito");
 
@@ -302,15 +313,15 @@ xhr.send();
           total_suspeito++
         }
 
-        if(result[i].mun_notificacao == cidade && result[i].evolucao == "RECUPERADO" && result[i].classe == "CONFIRMADO") 
+        if(result.x.data[5][i] == cidade && result.x.data[12][i] == "RECUPERADO" && result.x.data[10][i] == "CONFIRMADO") 
         {
-          var id   = result[i].X;
-          var data = result[i].dt_notificacao;
-          var idade   = result[i].Idade;
-          var sexo   = result[i].Sexo;
-          var primeiros_sint   = result[i].dt_primeiros_sintomas;
-          var sintomas = result[i].sintomas;
-          var comorbidades = result[i].comorbidades;
+          var id   = result.x.data[0][i];
+          var data = result.x.data[2][i];
+          var idade   = result.x.data[3][i];
+          var sexo   = result.x.data[4][i];
+          var primeiros_sint   = result.x.data[6][i];
+          var sintomas = result.x.data[7][i];
+          var comorbidades = result.x.data[8][i];
 
           tabela = document.getElementById("tabela_covid_recuperado");
 
@@ -338,16 +349,16 @@ xhr.send();
           total_recuperado++
         }
 
-        if(result[i].mun_notificacao == cidade && result[i].evolucao == "ÓBITO" && result[i].classe == "CONFIRMADO") 
+        if(result.x.data[5][i] == cidade && result.x.data[12][i] == "ÓBITO" && result.x.data[10][i] == "CONFIRMADO") 
         {
-          var id   = result[i].X;
-          var data = result[i].dt_notificacao;
-          var idade   = result[i].Idade;
-          var sexo   = result[i].Sexo;
-          var primeiros_sint   = result[i].dt_primeiros_sintomas;
-          var sintomas = result[i].sintomas;
-          var comorbidades = result[i].comorbidades; 
-          var data_obito = result[i].dt_obito;
+          var id   = result.x.data[0][i];
+          var data = result.x.data[2][i];
+          var idade   = result.x.data[3][i];
+          var sexo   = result.x.data[4][i];
+          var primeiros_sint   = result.x.data[6][i];
+          var sintomas = result.x.data[7][i];
+          var comorbidades = result.x.data[8][i];
+          var data_obito = result.x.data[13][i];
 
           tabela = document.getElementById("tabela_covid_obito");
 
@@ -401,7 +412,10 @@ xhr.send();
       coluna_obito.innerHTML = total_obito
       coluna_ativos.innerHTML = total_ativos
       coluna_total.innerHTML = total_cidade
-    });
+    }
+    }
+    xhr.send();
+
     $('#totais').show()
   }
 
@@ -487,7 +501,7 @@ $.getJSON("cidades_brasil.json", function(cidades, JSON_UNESCAPED_UNICODE){
       <table class="table">
         <a class="texto-2">
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          Atualização: 21/04/2020
+          Atualização: 22/04/2020
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </a>
       <div id="myDropdown" class="dropdown-content">
@@ -579,7 +593,7 @@ $.getJSON("cidades_brasil.json", function(cidades, JSON_UNESCAPED_UNICODE){
               <th scope="col">Notificação</th>
               <th scope="col">Idade</th>
               <th scope="col">Sexo</th>
-              <th scope="col">Inicio Sint.</th>
+              <th style="width:6%" scope="col">Inicio Sint.</th>
               <th scope="col">Sintomas</th>
               <th scope="col">Comorbidades</th>
             </tr>
@@ -609,7 +623,7 @@ $.getJSON("cidades_brasil.json", function(cidades, JSON_UNESCAPED_UNICODE){
               <th scope="col">Notificação</th>
               <th scope="col">Idade</th>
               <th scope="col">Sexo</th>
-              <th scope="col">Inicio Sint.</th>
+              <th style="width:6%" scope="col">Inicio Sint.</th>
               <th scope="col">Sintomas</th>
               <th scope="col">Comorbidades</th>
             </tr>
@@ -639,7 +653,7 @@ $.getJSON("cidades_brasil.json", function(cidades, JSON_UNESCAPED_UNICODE){
               <th scope="col">Notificação</th>
               <th scope="col">Idade</th>
               <th scope="col">Sexo</th>
-              <th scope="col">Inicio Sint.</th>
+              <th style="width:6%" scope="col">Inicio Sint.</th>
               <th scope="col">Sintomas</th>
               <th scope="col">Comorbidades</th>
             </tr>
@@ -669,7 +683,7 @@ $.getJSON("cidades_brasil.json", function(cidades, JSON_UNESCAPED_UNICODE){
             <th scope="col">Notificação</th>
             <th scope="col">Idade</th>
             <th scope="col">Sexo</th>
-            <th scope="col">Inicio Sint.</th>
+            <th style="width:6%" scope="col">Inicio Sint.</th>
             <th scope="col">Sintomas</th>
             <th scope="col">Comorbidades</th>
           </tr>
@@ -699,7 +713,7 @@ $.getJSON("cidades_brasil.json", function(cidades, JSON_UNESCAPED_UNICODE){
             <th scope="col">Notificação</th>
             <th scope="col">Idade</th>
             <th scope="col">Sexo</th>
-            <th scope="col">Inicio Sint.</th>
+            <th style="width:6%" scope="col">Inicio Sint.</th>
             <th scope="col">Sintomas</th>
             <th scope="col">Comorbidades</th>
           </tr>
@@ -729,10 +743,10 @@ $.getJSON("cidades_brasil.json", function(cidades, JSON_UNESCAPED_UNICODE){
             <th scope="col">Notificação</th>
             <th scope="col">Idade</th>
             <th scope="col">Sexo</th>
-            <th scope="col">Inicio Sint.</th>
+            <th style="width:6%" scope="col">Inicio Sint.</th>
             <th scope="col">Sintomas</th>
             <th scope="col">Comorbidades</th>
-            <th scope="col">Data Óbito</th>
+            <th style="width:6%" scope="col">Data Óbito</th>
           </tr>
         </thead>
         <tbody id="tabela_covid_obito">
