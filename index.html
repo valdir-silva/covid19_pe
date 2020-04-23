@@ -19,10 +19,41 @@
 function atualizar() {
   window.location.reload()
 }
+var result
 
-$.getJSON("csvjson.json", function(result){
-      
-    var pe_uti = 0
+
+
+url = "http://dados.seplag.pe.gov.br/apps/corona.html#dados-pe"
+const proxyurl = "https://cors-anywhere.herokuapp.com/";
+var xhr = new XMLHttpRequest();
+xhr.open("GET", proxyurl + url, true);
+xhr.onreadystatechange = function() {
+if (xhr.readyState == 4){
+
+    //var DomParser = require('dom-parser');
+    //var parser = new DomParser();
+    //var doc = parser.parseFromString(xhr.responseText, "text/html");
+
+    var doc = document.createElement('html');
+    doc.innerHTML = xhr.responseText;
+
+    var inputs = doc.getElementsByTagName('script');
+
+    gambiarra = "{\"x\":{\"filter\":\"none\",\"extensions\":[\"Buttons\",\"KeyTable\",\"Responsive\"],\"fillContainer\":true,\"data\":[[1"
+    for(var i = 0; i < inputs.length; i++) {
+        var pagina = inputs[i].innerHTML;
+        if(pagina.substring(0,102).toLowerCase() == gambiarra.toLowerCase()){
+            console.log(i + "teste: " + inputs[i].length)
+            var exemple = inputs[i].innerHTML;
+
+                    console.log(j)
+                    result = JSON.parse(exemple);
+                    console.log(result.x.data[0][0]);//TESTE
+                
+        }
+    }
+        //CODIGO AQUI
+        var pe_uti = 0
     var pe_internado = 0
     var pe_isolamento = 0
     var pe_suspeito = 0
@@ -31,14 +62,15 @@ $.getJSON("csvjson.json", function(result){
     var pe_ativos = 0
     var pe_total = 0
 
-    for(i=0; i < result.length; i++){
-      if(result[i].classe == "CONFIRMADO"){pe_total++}
-      if(result[i].evolucao == "INTERNADO UTI" && result[i].classe == "CONFIRMADO"){pe_uti++}
-      if(result[i].evolucao == "INTERNADO LEITO DE ISOLAMENTO" && result[i].classe == "CONFIRMADO"){pe_internado++}
-      if(result[i].evolucao == "ISOLAMENTO DOMICILIAR" && result[i].classe == "CONFIRMADO"){pe_isolamento++}
-      if(result[i].classe == "EM INVESTIGAÇÃO"){pe_suspeito++}
-      if(result[i].evolucao == "RECUPERADO" && result[i].classe == "CONFIRMADO"){pe_recuperado++}
-      if(result[i].evolucao == "ÓBITO" && result[i].classe == "CONFIRMADO"){pe_obito++}
+    for(i=0; i < result.x.data[0].length; i++){
+      
+      if(result.x.data[10][i] == "CONFIRMADO"){pe_total++}
+      if(result.x.data[12][i] == "INTERNADO UTI" && result.x.data[10][i] == "CONFIRMADO"){pe_uti++}
+      if(result.x.data[12][i] == "INTERNADO LEITO DE ISOLAMENTO" && result.x.data[10][i] == "CONFIRMADO"){pe_internado++}
+      if(result.x.data[12][i] == "ISOLAMENTO DOMICILIAR" && result.x.data[10][i] == "CONFIRMADO"){pe_isolamento++}
+      if(result.x.data[10][i] == "EM INVESTIGAÇÃO"){pe_suspeito++}
+      if(result.x.data[12][i] == "RECUPERADO" && result.x.data[10][i] == "CONFIRMADO"){pe_recuperado++}
+      if(result.x.data[12][i] == "ÓBITO" && result.x.data[10][i] == "CONFIRMADO"){pe_obito++}
     }
     pe_ativos = pe_total - pe_obito - pe_recuperado
 
@@ -78,7 +110,9 @@ $.getJSON("csvjson.json", function(result){
     $('#recuperado').hide()
     $('#obito').hide()
 
-  });
+    }
+}
+xhr.send();
 
   function removeTextNodes(el) {
     var nodes = el.childNodes, i = nodes.length;
@@ -453,7 +487,7 @@ $.getJSON("cidades_brasil.json", function(cidades, JSON_UNESCAPED_UNICODE){
       <table class="table">
         <a class="texto-2">
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          Atualização: 20/04/2020
+          Atualização: 21/04/2020
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </a>
       <div id="myDropdown" class="dropdown-content">
