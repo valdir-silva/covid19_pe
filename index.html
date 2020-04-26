@@ -184,7 +184,7 @@ xhr.send();
 
         if(result.x.data[munic_][i] == cidade && result.x.data[classe_][i] == "CONFIRMADO"){total_cidade++}
 
-        if(result.x.data[munic_][i] == cidade && result.x.data[evoluc_][i] == "INTERNADO UTI")
+        if(result.x.data[munic_][i] == cidade && result.x.data[evoluc_][i] == "INTERNADO UTI" && result.x.data[classe_][i] == "CONFIRMADO")
         {
           var id   = result.x.data[x_][i];
           var data = result.x.data[dt_not_][i];
@@ -220,7 +220,7 @@ xhr.send();
           total_uti++
         }
 
-        if(result.x.data[munic_][i] == cidade && result.x.data[evoluc_][i] == "INTERNADO LEITO DE ISOLAMENTO")
+        if(result.x.data[munic_][i] == cidade && result.x.data[evoluc_][i] == "INTERNADO LEITO DE ISOLAMENTO" && result.x.data[classe_][i] == "CONFIRMADO")
         {
           var id   = result.x.data[x_][i];
           var data = result.x.data[dt_not_][i];
@@ -256,7 +256,7 @@ xhr.send();
           total_internado++
         }
 
-        if(result.x.data[munic_][i] == cidade && result.x.data[evoluc_][i] == "ISOLAMENTO DOMICILIAR") 
+        if(result.x.data[munic_][i] == cidade && result.x.data[evoluc_][i] == "ISOLAMENTO DOMICILIAR" && result.x.data[classe_][i] == "CONFIRMADO") 
         {
           var id   = result.x.data[x_][i];
           var data = result.x.data[dt_not_][i];
